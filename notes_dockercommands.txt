@@ -1,0 +1,102 @@
+What is docker?
+Docker is a tool designed to make it easier to create, deploy and run applications by using containers.
+Containers allow a developer to package up and application with all of the parts it needs, such as libraries
+and other dependencies, and ship it all out as on package.
+
+Dockerfile Instructions:
+
+FROM - Used to choose the base image for the docker build context
+    -- Dockerfile -- Default file to be present for the build context
+    -- If user wants to use a different file, it can be done by providing the file path
+        "docker build -t nginx_custom:v1 -f Dockerfile2 ."
+
+RUN - Used to execute any linux commands
+
+COPY - Used to copy files in the localhost into the docker image
+
+ADD - Download the files from the internet and copy it into the image
+
+ENV - Create environment variables so that values can be stored and referenced later as required
+
+WORKDIR - Change the current working directory of an image or a running containers
+
+LABEL - Used to include metadata for an image.
+
+ARGS - Build an images from the docker file by passing the arguments to the build context using --build-arg
+
+USER - Switch to the user
+
+CMD - Command to run to keep the containers alive(without using this while building docker images, the containers will exit with errors when an instance is run)
+
+du -shc * -- Get the size of the build context 
+
+.dockerignore -- ignore files and folders which need not be included as build context while building a docker image
+
+
+Docker Best Practices:
+
+- One service per containers
+- Build context should be small
+- Avoid unnecessary packages
+- Less layers -- Ex:-Dockerfile4
+
+Built Apache php webserver with custom SSL certificates
+Dangling images(orphaned images)
+    - Can be avoided by using tags along with image names (Ex: apache:v1, apache:v2,....)
+    - Can be removed using the command
+        - docker images -f dangling=true -q (lists all dangling image IDs)
+        - docker rmi $(docker images -f dangling=true -q) -- Removes all the images
+
+
+Docker Multi-Stage Build - Purpose is to reduce the size of the final docker image by just getting only the required files from the previous Stage
+
+
+Docker Network:
+
+Network in Docker are way useful to provide network connection between containers.
+ - Bridge Network
+ - Host Network
+ - None Network
+
+Network Commands:
+docker network ls - Lists docker networks
+docker network inspect bridge - get data about bridge network
+docker inspect container - to check the network the container is attached tool
+docker0 interface handles all the traffic of the containers
+docker inspect bridge - inspect the bridge network
+
+Exercise: create a container and check if the container's network is a bridge network
+
+Using ping command to check the communication between two containers linked to a default bridge Network:
+docker exec container2 bash -c "ping 172.17.0.2"
+Note: With default network cannot use the container names to ping
+
+Creating Docker Network:
+docker network create --help
+docker network create -d bridge --subnet 172.12.0.0/16 --gateway 172.12.0.1 my_network
+docker network ls
+docker network inspect my_network
+
+Remove Docker Network:
+docker network rm my_network
+Note: Cannot remove the default networks bridge, host, null
+
+Embedded DNS! Ping containers by name in the same network
+Create running containers, container1 & container2
+docker network create -d bridge --subnet 172.12.0.0/16 --gateway 172.12.0.1 my_network
+docker network connect my_network container1
+docker network connect my_network container2
+docker network inspect my_network -- Above containers should be attached to this network(my_network)
+docker exec -ti container1 ping container2 or by below method
+docker exec container2 bash -c "ping container1"
+docker network disconnect my_network container2
+
+To create a container to have static IP in a custom network, use the below command:
+docker run -dti --network my_network --ip 172.12.0.100 --name test2 centos
+Note: This cannot be performed on a default bridge network
+
+Creating a container that binds with the host network:
+docker run --rm -ti --network host centos bash
+
+Creating a container that binds with no network(none):
+docker run --rm -dti --network none --name none centos 

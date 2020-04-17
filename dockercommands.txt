@@ -1,0 +1,96 @@
+988  docker rm -f bc0d88064a0a
+  989  docker build -t nginx:v1 -f Dockerfile-Nginx .
+  990  docker run --name test -d -p 9090:80 nginx:v1
+  992  docker build -t nginx:v1 -f Dockerfile-Nginx .
+  993  docker run --name test1 -d -p 9091:80 nginx:v1
+ 1002  cd techlearnings/docker_crash_course/docker-images/
+ 1008  docker build -t test-multi .
+ 1009  docker images | grep test-multi
+ 1010  docker pull alpine
+ 1011  docker images | grep alpie
+ 1012  docker images | grep alpine
+ 1014  docker build -t test-multi .
+ 1015  docker images | grep test-multi
+ 1033  cd docker_crash_course/docker-images/
+ 1038  docker build -t app-maven:v2 -f Dockerfile-multistage .
+ 1039  docker images | grep maven
+ 1041  docker images | grep maven
+ 1042  docker build -t app-maven:v2 -f Dockerfile-multistage .
+ 1045  docker images | grep maven
+ 1048  docker build -t app-maven:v3 -f Dockerfile-multistage .
+ 1049  docker images | grep maven
+ 1050  docker run --name test1 -dti -p 9091:80 app-maven:v3 
+ 1051  docker run --name test1 -dti -p 9090:80 app-maven:v3 
+ 1052  docker ps -a
+ 1053  docker a8eddf13ba54 f0eb95fb612f
+ 1054  docker rm a8eddf13ba54 f0eb95fb612f
+ 1055  docker run --name test1 -dti -p 9090:80 app-maven:v3 
+ 1056  docker ps
+ 1057  docker ps -a
+ 1058  docker logs 275a3598cdde
+ 1061  ip a | grep docker
+ 1062  docker network ls
+ 1100  cd techlearnings/docker_crash_course/docker-images/
+ 1102  docker ps
+ 1103  docker network ls
+ 1104  docker run -dti --name container1 centos
+ 1105  docker run -dti --name container2 centos
+ 1106  docker ps
+ 1107  docker network inspect bridge 
+ 1480  scp -i ~/Desktop/FlaskAsk/alexaskills.pem /media/suhas/Backups/ArchBackup/Archive/inmail-tests/integration-test/docker/docker-compose.yml  ubuntu@3.219.251.159:/home/ubuntu/jenkins
+ 1506  cp /media/suhas/Backups/ArchBackup/Archive/inmail-tests/integration-test/docker/docker-compose.yml .
+ 1507  docker-compose up -d --scale chrome=5
+ 1511  nano docker-compose.yml 
+ 1512  docker-compose up -d --scale chrome=5
+ 1515  docker-compose up -d
+ 1517  docker-system prune -a
+ 1518  docker system prune -a
+ 1519  docker-compose up -d
+ 1520  docker-compose up -d --scale chrome=5
+ 1942  ip a | grep docker
+ 1943  docker network ls
+ 1944  docker network ls | grep bridge
+ 1945  docker network inspect bridge
+ 1946  docker run -dti centos
+ 1947  docker ps
+ 1948  docker inspect 46e8c9cdab59
+ 1949  docker network inspect bridge
+ 1950  docker network ls
+ 1951  docker ps
+ 1952  docker rm -f 46e8c9cdab59
+ 1953  docker run -dti --name container1 centos
+ 1954  docker run -dti --name container2 centos
+ 1955  docker ps
+ 1956  docker network inspect bridge 
+ 1957  docker ps
+ 1958  docker inspect container1
+ 1959  docker inspect container2
+ 1960  docker exec container1 bash -c "ping 172.17.0.3"
+ 1961  docker exec container1 bash -c "ping 172.17.0.2"
+ 1962  docker exec container2 bash -c "ping 172.17.0.2"
+ 1963  docker network create --help
+ 1964  docker network inspect bridge
+ 1965  docker network create -d bridge --subnet 172.12.0.0/16 --gateway 172.12.0.1
+ 1966  docker network create -d bridge --subnet 172.12.0.0/16 --gateway 172.12.0.1 my_network
+ 1967  docker network ls
+ 1968  docker network inspect my_network 
+ 1969  docker network rm my_network
+ 1970  docker network create -d bridge --subnet 172.12.0.0/16 --gateway 172.12.0.1 my_network
+ 1971  docker ps
+ 1972  docker network connect my_network container1
+ 1973  docker network connect my_network container2
+ 1974  docker network inspect my_network 
+ 1975  docker exec -ti container1 ping container2
+ 1976  docker exec -ti container2 ping container1
+ 1977  docker exec container2 bash -c "ping 172.17.0.2"
+ 1978  docker exec container2 bash -c "ping container"
+ 1979  docker exec container2 bash -c "ping 172.17.0.3"
+ 1980  docker exec container1 bash -c "ping 172.17.0.3"
+ 1981  docker network rm my_network 
+ 1982  docker network rm -f my_network 
+ 1983  docker network disconnect my_network container1 
+ 1984  docker network disconnect my_network container2
+ 1985  docker network rm -f my_network 
+ 1986  docker network rm my_network 
+ 1987  history | grep docker
+

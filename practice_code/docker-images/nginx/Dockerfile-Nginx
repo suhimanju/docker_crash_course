@@ -1,0 +1,29 @@
+FROM centos:7
+
+COPY conf/nginx.repo /etc/yum.repos.d/nginx.repo
+
+RUN \
+  yum -y install nginx && \
+  yum -y install https://centos7.iuscommunity.org/ius-release.rpm && \
+  yum -y install \
+    php71u-fpm \
+    php71u-common \
+    php71u-cli --enablerepo=ius && yum clean all
+
+RUN mkdir /nginx_php
+
+# Default configuration for nginx
+COPY conf/nginx.conf /etc/nginx/conf.d/default.conf
+
+COPY fruit /nginx_php
+
+COPY test.php /nginx_php
+
+# Copy the shell script to start php and ngnix
+COPY conf/start.sh /start.sh
+
+# Executable permissions for the stript to run within the container
+RUN chmod +x /start.sh
+
+# Command to execute to keep the container alive
+CMD /start.sh

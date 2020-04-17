@@ -1,0 +1,35 @@
+What is Docker Compose?
+
+Multi-container tool to ease administration of 
+1. Images
+2. Containers
+3. Volumes
+4. Networks
+
+Default file for docker-compose:
+docker-compose.yml
+
+Docker commands spin/kill containers:
+docker-compose up -d (runs containers in background)
+docker-compose down (kill all containers that were spun using docker-compose file in the previous context)
+
+# Use below command to run docker-compose from a different file name:
+docker-compose -f docker-compose-networks.yml up -d
+
+Get docker root folder:
+docker info | grep -i root
+  Docker Root Dir: /var/lib/docker
+
+Docker Compose yaml mandatory definitions:
+version (use version 3 the latest and recommended)
+services (should have atleast one service)
+
+Networking in docker compose:
+
+If the containers are spun using docker-compose file, then we can ping the containers using the service names as below:
+docker exec nginx sh -c "ping db"
+
+Building an image using docker compose:
+docker-compose build 
+
+docker-compose logs -f --> check for logs

@@ -1,0 +1,136 @@
+Docker Images:
+Images are read only templates used to create containers.
+Images are created with the docker build command, either by us or by docker users.
+Images are composed of layers of other images.
+Images are stored in a docker registry
+
+Docker Containers:
+If an image is a class, then a container is an instance of a class - a runtime object.
+Containers are lightweight and portable encapsulations of an environment in which to run applications
+Containers are created from images. Inside a container, it has all the binaries and dependencies needed to run the application.
+
+
+Registries and Repositories:
+A registry is where we store our images.
+You can host your own registry, or you can use Docker's public registry which is called DockerHub.
+Inside a registry, images are stored in repositories.
+
+Docker Hub - A public repository
+
+docker images - get the list of all the images running on your machine
+docker run - This command will create the container using the image we specified, then spin up the container and run it(docker run busybox:1.24ks)
+
+
+docker images <imagename:tag> <command to run in the container>
+The -i flag starts an interactive container.
+The -t flag creates a pseudo-TTY that attaches stdin and stdout
+
+docker run -it busybox:1.24 -- interactive mode
+
+Deep Dive into Docker:
+docker ps
+docker ps -a
+docker run --rm <image_name> <command to exec> -- Remove image
+docker run -d <image> -- Run the container in detached mode
+
+docker inspect -- Displays the low level information about a container or image
+docker inspect <image_id> or <container_id>
+
+Docker Port Mapping and Logs command:
+docker run -d -it -p 8888:8080 tomcat:8.0
+                     host:container
+
+docker logs <container_id> --details --timestamp
+
+view docker image layers
+docker history <image name>
+
+Steps to Build a Docker Image:
+1. Spin up a container from a base image.
+2. Install Git package in the container.
+3. Commit changes made in the container.
+
+Docker commit - This command would save the changes we made to the Docker container's file system to a new image
+
+docker commit container_id repository_name:tag
+
+
+Dockerfile and Instructions:
+A Dockerfile is a text document that contains all the instructions users provide to assemble and image.
+Each instruction will create a new image layer to the image.
+Instructions specify what to do when building and image.
+
+Docker Build Context
+Docker build command takes the path to the build context as an argument.
+
+Build Command:
+docker build -t suhas/debian .
+
+
+Chain RUN Instructions
+- Each RUN command will execute the command on the top writable layer of the container,
+  then commit the container as a new image.
+
+- The new image is used for the next step in the Dockerfile. So each RUN instruction will 
+  create a new image layer
+
+- It is recommended to chain the RUN instructions in the Dockerfile to reduce the number of
+  image layers it creates.
+  
+Sort Multi-line Arguments Alphanumerically in the Dockerfile - This help in avoiding duplication of
+packages and make the list much easier to update.
+
+
+CMD Instructions:
+- CMD instruction specifies what command you want to run when the container starts up.
+- If we don't specify CMD instruction in the Dockerfile, Docker will use the default command 
+  defined in the base image
+- The CMD instruction doesn't run when building the image, it only runs when the container starts up
+
+Docker Cache:
+- Each time docker executes an instruction it builds a new image layer
+- The next time docker uses cache to build the images quickly
+- To invalidate the cache while building an image, use the below command:
+
+docker build -t suhas/debian . --no-cache=true
+
+Docker run application in detached mode and by exposing port:
+docker run -d -p <container_port>:<host_port> <image_id>
+
+Docker command to run commands in a running container:
+docker ps -- gives the list of container processes running
+docker exec -it <container_id> <command_to_execute_within_container>
+
+Redis:
+
+- In-memory data structure store, used as database, cache and message broker.
+- Built-in replication and different levels of on-disk persistence.
+- Widely used in lots of critical products in the field such as twitter Timeline Service and Facebook News Feed.
+
+Docker Container Links:
+docker run -d -p <container_port>:<host_port> --link <service to link with> <dockerimage>
+
+Benefits of Docker Container Links:
+- The main use for docker container links is when we build and application with a microservice architecture, 
+  we are able to run many independent components in different containers.
+
+- Docker creates a secure tunnel between the containers that doesn't need to expose any ports externally on the container.
+
+Docker Compose:
+- Docker compose is a very handy tool to quickly get docker environment up and running.
+- Docker compose uses yaml files to store the configuration of all the containers, which removes the burden to maintain our
+  scripts for docker orchestration.
+
+Why Docker Compose:
+Manual linking containers and configuring services become impractical when the number of containers grows.
+
+Docker Compose Commands:
+- docker-compose up > starts up all the containers.
+- docker-compose ps > checks the status of the containers managed by docker compose.
+- docker-compose logs > outputs colored and aggregated logs for the compose-managed containers.
+- docker-compose logs -f > outputs appended log when the log grows.
+- docker-compose logs <container-name> > outputs the logs of a specific container.
+- docker-compose stop > stops all the running containers without removing them.
+- docker-compose rm > removes all the containers.
+- docker-compose build > rebuilds all the images.
+
